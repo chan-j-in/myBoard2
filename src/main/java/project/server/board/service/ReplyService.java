@@ -19,6 +19,7 @@ public class ReplyService {
 
     private final ReplyRepository replyRepository;
     private final BoardRepository boardRepository;
+    private final BoardService boardService;
 
     public Long createReply(ReplyPostDto replyPostDto, Long boardId) {
         Reply reply = new Reply();
@@ -40,9 +41,10 @@ public class ReplyService {
     }
 
     @Transactional
-    public void deleteReply(Long id) {
-        findReplyId(id);
-        replyRepository.deleteById(id);
+    public void deleteReply(Long boardId, Long replyId) {
+        findBoardId(boardId);
+        findReplyId(replyId);
+        replyRepository.deleteById(replyId);
     }
 
     @Transactional
@@ -52,8 +54,9 @@ public class ReplyService {
     }
 
     @Transactional
-    public Page<ReplyResponseDto> findAllReplies(Pageable pageable) {
-        Page<Reply> replies = replyRepository.findAll(pageable);
+    public Page<ReplyResponseDto> findAllReplies(Pageable pageable, Long boardId) {
+        Board board = boardService.findBoardId(boardId);
+        Page<Reply> replies = replyRepository.findByBoard(board, pageable);
         return replies.map(ReplyResponseDto::FindFromReply);
     }
 
