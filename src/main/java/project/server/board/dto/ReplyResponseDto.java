@@ -4,21 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import project.server.board.entity.Board;
+import project.server.board.entity.Reply;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class BoardResponseDto {
+public class ReplyResponseDto {
 
     private Long id;
-    private String title;
     private String content;
 
-    public static BoardResponseDto FindFromBoard(Board board) {
-        return new BoardResponseDto(
-                board.getId(),
-                board.getTitle(),
-                board.getContent()
+    public static ReplyResponseDto FindFromReply(Reply reply) {
+        return new ReplyResponseDto(
+                reply.getId(),
+                reply.getContent()
         );
     }
 }
