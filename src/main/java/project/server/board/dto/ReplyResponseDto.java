@@ -3,7 +3,6 @@ package project.server.board.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import project.server.board.entity.Board;
 import project.server.board.entity.Reply;
 
 @Getter
