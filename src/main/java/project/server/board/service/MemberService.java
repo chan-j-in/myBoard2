@@ -42,8 +42,7 @@ public class MemberService {
     public Long createMember(MemberPostDto memberPostDto) {
         Member member = new Member();
         member.setEmail(memberPostDto.getEmail());
-        member.setPassword(passwordEncoder.encode(memberPostDto.getPassword()));
-        member.setRoles(customAuthorityUtils.createRoles(memberPostDto.getEmail()));
+        member.setPassword(memberPostDto.getPassword());
         member.setNickname(memberPostDto.getNickname());
 
         return memberRepository.save(member).getId();
@@ -53,7 +52,7 @@ public class MemberService {
         Member member = findMemberId(id);
         member.setNickname(memberPatchDto.getNickname());
         member.setEmail(memberPatchDto.getNickname());
-        member.setPassword(passwordEncoder.encode(memberPostDto.getPassword()));
+        member.setPassword(memberPatchDto.getPassword());
 
 
         return memberRepository.save(member).getId();

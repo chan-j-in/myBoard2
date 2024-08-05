@@ -23,23 +23,21 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    public Long createBoard(BoardPostDto boardPostDto, Long memberId) {
+    public Long createBoard(BoardPostDto boardPostDto) {
         Board board = new Board();
-        Member member = memberService.findMemberId(memberId);
         board.setTitle(boardPostDto.getTitle());
         board.setContent(boardPostDto.getContent());
-        board.setMember(member);
+        board.setMember(memberService.findByNickname(boardPostDto.getNickname()));
 
         return boardRepository.save(board).getId();
     }
 
     @Transactional
-    public Long updateBoard(BoardPatchDto boardPatchDto, Long boardId, Long memberId) {
+    public Long updateBoard(BoardPatchDto boardPatchDto, Long boardId) {
         Board board = findBoardId(boardId);
-        Member member = memberService.findMemberId(memberId);
         board.setTitle(boardPatchDto.getTitle());
         board.setContent(boardPatchDto.getContent());
-        board.setMember(member);
+        board.setMember(memberService.findByNickname(boardPatchDto.getNickname()));
 
         return boardRepository.save(board).getId();
     }

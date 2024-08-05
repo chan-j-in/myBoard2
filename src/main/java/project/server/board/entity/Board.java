@@ -28,4 +28,5 @@ public class Board {
     private Member member;
 
     private Long boardCount;
+
 }

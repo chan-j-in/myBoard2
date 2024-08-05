@@ -23,25 +23,21 @@ public class ReplyService {
     private final BoardService boardService;
     private final MemberService memberService;
 
-    public Long createReply(ReplyPostDto replyPostDto, Long boardId, Long memberId) {
+    public Long createReply(ReplyPostDto replyPostDto, Long boardId) {
         Reply reply = new Reply();
-        Board board = findBoardId(boardId);
-        Member member = memberService.findMemberId(memberId);
-        reply.setBoard(board);
+        reply.setBoard(boardService.findBoardId(boardId));
         reply.setContent(replyPostDto.getContent());
-        reply.setMember(member);
+        reply.setMember(memberService.findByNickname(replyPostDto.getNickname()));
 
         return replyRepository.save(reply).getId();
     }
 
     @Transactional
-    public Long updateReply(ReplyPatchDto replyPatchDto, Long replyId, Long boardId, Long memberId) {
+    public Long updateReply(ReplyPatchDto replyPatchDto, Long replyId, Long boardId) {
         Reply reply = findReplyId(replyId);
-        Board board = findBoardId(boardId);
-        Member member = memberService.findMemberId(memberId);
-        reply.setBoard(board);
+        reply.setBoard(boardService.findBoardId(boardId));
         reply.setContent(replyPatchDto.getContent());
-        reply.setMember(member);
+        reply.setMember(memberService.findByNickname(replyPatchDto.getNickname()));
 
         return replyRepository.save(reply).getId();
     }
