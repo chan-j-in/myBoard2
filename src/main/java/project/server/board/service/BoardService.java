@@ -11,27 +11,35 @@ import project.server.board.dto.BoardPatchDto;
 import project.server.board.dto.BoardPostDto;
 import project.server.board.dto.BoardResponseDto;
 import project.server.board.entity.Board;
+import project.server.board.entity.Member;
 import project.server.board.repository.BoardRepository;
+import project.server.board.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
-    public Long createBoard(BoardPostDto boardPostDto) {
+    public Long createBoard(BoardPostDto boardPostDto, Long memberId) {
         Board board = new Board();
+        Member member = memberService.findMemberId(memberId);
         board.setTitle(boardPostDto.getTitle());
         board.setContent(boardPostDto.getContent());
+        board.setMember(member);
 
         return boardRepository.save(board).getId();
     }
 
     @Transactional
-    public Long updateBoard(BoardPatchDto boardPatchDto, Long id) {
-        Board board = findBoardId(id);
+    public Long updateBoard(BoardPatchDto boardPatchDto, Long boardId, Long memberId) {
+        Board board = findBoardId(boardId);
+        Member member = memberService.findMemberId(memberId);
         board.setTitle(boardPatchDto.getTitle());
         board.setContent(boardPatchDto.getContent());
+        board.setMember(member);
 
         return boardRepository.save(board).getId();
     }
@@ -42,15 +50,22 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
-    @Transactional
     public void deleteBoard(Long id) {
         findBoardId(id);
         boardRepository.deleteById(id);
     }
 
+    public void isPermission(Member member, String email) {
+        if(!member.getEmail().equals(email)) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+    }
+
     @Transactional
     public BoardResponseDto findByBoardId(Long id) {
         Board board = findBoardId(id);
+        board.setBoardCount(board.getBoardCount()+1);
+        boardRepository.save(board);
         return BoardResponseDto.FindFromBoard(board);
     }
 

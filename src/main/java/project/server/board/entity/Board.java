@@ -22,4 +22,10 @@ public class Board {
 
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Reply> replies;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    private Long boardCount;
 }

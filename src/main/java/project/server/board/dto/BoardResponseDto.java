@@ -13,12 +13,14 @@ public class BoardResponseDto {
     private Long id;
     private String title;
     private String content;
+    private String nickname;
 
     public static BoardResponseDto FindFromBoard(Board board) {
         return new BoardResponseDto(
                 board.getId(),
                 board.getTitle(),
-                board.getContent()
+                board.getContent(),
+                board.getMember().getNickname()
         );
     }
 }

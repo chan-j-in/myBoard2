@@ -14,11 +14,13 @@ public class ReplyResponseDto {
 
     private Long id;
     private String content;
+    private String nickname;
 
     public static ReplyResponseDto FindFromReply(Reply reply) {
         return new ReplyResponseDto(
                 reply.getId(),
-                reply.getContent()
+                reply.getContent(),
+                reply.getMember().getNickname()
         );
     }
 }

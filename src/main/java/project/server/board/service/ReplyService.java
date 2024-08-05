@@ -9,6 +9,7 @@ import project.server.board.Exception.BusinessLogicException;
 import project.server.board.Exception.ExceptionCode;
 import project.server.board.dto.*;
 import project.server.board.entity.Board;
+import project.server.board.entity.Member;
 import project.server.board.entity.Reply;
 import project.server.board.repository.BoardRepository;
 import project.server.board.repository.ReplyRepository;
@@ -20,22 +21,27 @@ public class ReplyService {
     private final ReplyRepository replyRepository;
     private final BoardRepository boardRepository;
     private final BoardService boardService;
+    private final MemberService memberService;
 
-    public Long createReply(ReplyPostDto replyPostDto, Long boardId) {
+    public Long createReply(ReplyPostDto replyPostDto, Long boardId, Long memberId) {
         Reply reply = new Reply();
         Board board = findBoardId(boardId);
+        Member member = memberService.findMemberId(memberId);
         reply.setBoard(board);
         reply.setContent(replyPostDto.getContent());
+        reply.setMember(member);
 
         return replyRepository.save(reply).getId();
     }
 
     @Transactional
-    public Long updateReply(ReplyPatchDto replyPatchDto, Long replyId, Long boardId) {
+    public Long updateReply(ReplyPatchDto replyPatchDto, Long replyId, Long boardId, Long memberId) {
         Reply reply = findReplyId(replyId);
         Board board = findBoardId(boardId);
+        Member member = memberService.findMemberId(memberId);
         reply.setBoard(board);
         reply.setContent(replyPatchDto.getContent());
+        reply.setMember(member);
 
         return replyRepository.save(reply).getId();
     }

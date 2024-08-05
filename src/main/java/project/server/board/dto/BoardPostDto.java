@@ -7,8 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BoardPostDto {
-    @NotEmpty(message = "제목을 입력하세요")
+    @NotEmpty
     private String title;
-    @NotEmpty(message = "내용을 입력하세요")
+    @NotEmpty
     private String content;
+    @NotEmpty
+    private String nickname;
 }

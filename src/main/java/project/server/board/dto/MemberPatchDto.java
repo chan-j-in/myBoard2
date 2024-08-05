@@ -1,17 +1,21 @@
 package project.server.board.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-public class ReplyPostDto {
+public class MemberPatchDto {
 
     @NotEmpty
-    private String content;
+    @Email
+    private String email;
+
+    @NotEmpty
+    private String password;
+
     @NotEmpty
     private String nickname;
 }

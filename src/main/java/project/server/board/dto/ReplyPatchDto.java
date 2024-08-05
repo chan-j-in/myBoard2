@@ -10,6 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ReplyPatchDto {
 
-    @NotEmpty(message = "댓글을 입력하세요")
+    @NotEmpty
     private String content;
+    @NotEmpty
+    private String nickname;
 }
